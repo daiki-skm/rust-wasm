@@ -42,13 +42,13 @@ impl Universe {
                 let cell = self.cells[idx];
                 let live_neighbors = self.live_neighbor_count(row, col);
 
-                log!(
-                    "cell[{}, {}] is initially {:?} and has {} live neighbors",
-                    row,
-                    col,
-                    cell,
-                    live_neighbors
-                );
+                // log!(
+                //     "cell[{}, {}] is initially {:?} and has {} live neighbors",
+                //     row,
+                //     col,
+                //     cell,
+                //     live_neighbors
+                // );
 
                 let next_cell = match (cell, live_neighbors) {
                     (Cell::Alive, x) if x < 2 => Cell::Dead,
@@ -58,7 +58,7 @@ impl Universe {
                     (otherwise, _) => otherwise,
                 };
 
-                log!("if becomes {:?}", next_cell);
+                // log!("if becomes {:?}", next_cell);
 
                 next[idx] = next_cell;
             }
@@ -109,6 +109,11 @@ impl Universe {
         self.height = height;
         self.cells = (0..self.width * height).map(|_i| Cell::Dead).collect();
     }
+    
+    pub fn toggle_cell(&mut self, row: u32, column: u32) {
+        let idx = self.get_index(row, column);
+        self.cells[idx].toggle();
+    }
 
     fn get_index(&self, row: u32, column: u32) -> usize {
         (row * self.width + column) as usize
@@ -156,5 +161,14 @@ impl fmt::Display for Universe {
         }
 
         Ok(())
+    }
+}
+
+impl Cell {
+    fn toggle(&mut self) {
+        *self = match *self {
+            Cell::Dead => Cell::Alive,
+            Cell::Alive => Cell::Dead,
+        }
     }
 }
