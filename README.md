@@ -1,6 +1,6 @@
 # rust-wasm
 
-## Words
+## Defs
 
 - rustup
   - Rust is installed and managed by the rustup tool.
